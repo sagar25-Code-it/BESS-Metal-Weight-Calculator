@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BESS Metal Weight Calculator</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f8;
+    padding:20px;
+}
+
+.container{
+    max-width:1700px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+    color:#003366;
+}
+
+.section{
+    background:#ffffff;
+    padding:15px;
+    margin-bottom:20px;
+    border-radius:8px;
+    box-shadow:0px 2px 8px rgba(0,0,0,0.15);
+}
+
+.section h2{
+    margin-bottom:15px;
+    color:#003366;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+label{
+    font-size:13px;
+    font-weight:600;
+}
+
+input,select{
+
+    width:100%;
+    padding:8px;
+    border:1px solid #bbb;
+    border-radius:5px;
+    font-size:14px;
+
+}
+
+.caseContainer{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+
+}
+
+.case{
+
+background:white;
+padding:15px;
+border-radius:8px;
+box-shadow:0px 2px 8px rgba(0,0,0,.15);
+
+}
+
+.case h2{
+
+text-align:center;
+margin-bottom:15px;
+color:#0b5394;
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+
+}
+
+table th{
+
+background:#003366;
+color:white;
+padding:8px;
+font-size:13px;
+
+}
+
+table td{
+
+border:1px solid #ccc;
+padding:6px;
+font-size:13px;
+text-align:center;
+
+}
+
+table input{
+
+text-align:center;
+
+}
+
+.result{
+
+background:#f9f9f9;
+padding:10px;
+margin-top:15px;
+border-radius:6px;
+
+}
+
+.result h3{
+
+margin-bottom:10px;
+color:#003366;
+
+}
+
+.result div{
+
+display:flex;
+justify-content:space-between;
+padding:5px 0;
+
+}
+
+.summary{
+
+margin-top:20px;
+background:white;
+padding:20px;
+border-radius:8px;
+box-shadow:0px 2px 8px rgba(0,0,0,.15);
+
+}
+
+.summary h2{
+
+margin-bottom:15px;
+text-align:center;
+
+}
+
+.summary table{
+
+font-size:15px;
+
+}
+
+.summary td{
+
+padding:10px;
+
+}
+
+.buttons{
+
+text-align:center;
+margin-top:25px;
+
+}
+
+button{
+
+padding:12px 30px;
+margin:5px;
+font-size:15px;
+cursor:pointer;
+border:none;
+border-radius:6px;
+background:#003366;
+color:white;
+
+}
+
+button:hover{
+
+background:#0055aa;
+
+}
+
+@media(max-width:1200px){
+
+.caseContainer{
+
+grid-template-columns:1fr;
+
+}
+
+.grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:700px){
+
+.grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>BESS FRAME METAL WEIGHT CALCULATOR</h1>
+
+<div class="section">
+
+<h2>Material Properties</h2>
+
+<div class="grid">
+
+<div>
+
+<label>Material</label>
+
+<select id="material">
+
+<option value="7850">MS (7850 kg/m³)</option>
+
+<option value="8000">SS304 (8000 kg/m³)</option>
+
+<option value="7980">SS316 (7980 kg/m³)</option>
+
+<option value="2700">Aluminium 6061 (2700 kg/m³)</option>
+
+<option value="2680">Aluminium 5052 (2680 kg/m³)</option>
+
+<option value="8960">Copper (8960 kg/m³)</option>
+
+</select>
+
+</div>
+
+<div>
+
+<label>Density (kg/m³)</label>
+
+<input id="density" value="7850">
+
+</div>
+
+<div>
+
+<label>Tube Height H (mm)</label>
+
+<input id="tubeH" value="50">
+
+</div>
+
+<div>
+
+<label>Tube Width W (mm)</label>
+
+<input id="tubeW" value="30">
+
+</div>
+
+<div>
+
+<label>Tube Thickness (mm)</label>
+
+<input id="tubeT" value="2">
+
+</div>
+
+<div>
+
+<label>Sheet Thickness (mm)</label>
+
+<input id="sheetT" value="1">
+
+</div>
+
+<div>
+
+<label>Top Cover Thickness (mm)</label>
+
+<input id="topT" value="1.5">
+
+</div>
+
+<div>
+
+<label>Miscellaneous Weight (kg)</label>
+
+<input id="misc" value="0">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="caseContainer">
+
+<!-- ========================= CASE 1 ============================== -->
+
+<div class="case">
+
+<h2>CASE - 1</h2>
+
+<table>
+
+<tr>
+<th>Component</th>
+<th>Length (mm)</th>
+<th>Qty</th>
+<th>Weight (kg)</th>
+</tr>
+
+<tr>
+<td>Long Side Tube</td>
+<td><input id="c1_long" value="2146"></td>
+<td><input id="c1_long_qty" value="4"></td>
+<td id="c1_long_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Short Side Tube</td>
+<td><input id="c1_short" value="1260"></td>
+<td><input id="c1_short_qty" value="4"></td>
+<td id="c1_short_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Short Side Cross Member</td>
+<td id="c1_short_cross_len">0</td>
+<td><input id="c1_short_cross_qty" value="2"></td>
+<td id="c1_short_cross_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Long Side Cross Member</td>
+<td id="c1_long_cross_len">0</td>
+<td><input id="c1_long_cross_qty" value="4"></td>
+<td id="c1_long_cross_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Vertical Leg Cross Member</td>
+<td id="c1_vertical_len">0</td>
+<td><input id="c1_vertical_qty" value="6"></td>
+<td id="c1_vertical_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Short Side MS Sheet</td>
+<td>585 × 252</td>
+<td><input id="c1_sheet_short_qty" value="8"></td>
+<td id="c1_sheet_short_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Long Side MS Sheet</td>
+<td>1025 × 252</td>
+<td><input id="c1_sheet_long_qty" value="8"></td>
+<td id="c1_sheet_long_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Top Cover</td>
+<td id="c1_top_size">0 × 0</td>
+<td>1</td>
+<td id="c1_top_wt">0.00</td>
+</tr>
+
+</table>
+
+<div class="result">
+
+<h3>CASE-1 RESULT</h3>
+
+<div><span>Tube Weight</span><span id="c1_tube_total">0.00 kg</span></div>
+
+<div><span>Sheet Weight</span><span id="c1_sheet_total">0.00 kg</span></div>
+
+<div><span>Top Cover Weight</span><span id="c1_cover_total">0.00 kg</span></div>
+
+<div><span>Misc Weight</span><span id="c1_misc_total">0.00 kg</span></div>
+
+<hr>
+
+<div style="font-weight:bold;font-size:18px;">
+<span>Total Weight</span>
+<span id="c1_total">0.00 kg</span>
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================= CASE 2 ============================== -->
+
+<div class="case">
+
+<h2>CASE - 2</h2>
+
+<table>
+
+<tr>
+<th>Component</th>
+<th>Length (mm)</th>
+<th>Qty</th>
+<th>Weight (kg)</th>
+</tr>
+
+<tr>
+<td>Long Side Tube</td>
+<td><input id="c2_long" value="2146"></td>
+<td><input id="c2_long_qty" value="2"></td>
+<td id="c2_long_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Short Side Tube</td>
+<td><input id="c2_short" value="1260"></td>
+<td><input id="c2_short_qty" value="2"></td>
+<td id="c2_short_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Short Side Cross Member</td>
+<td id="c2_short_cross_len">0</td>
+<td><input id="c2_short_cross_qty" value="1"></td>
+<td id="c2_short_cross_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Long Side Cross Member</td>
+<td id="c2_long_cross_len">0</td>
+<td><input id="c2_long_cross_qty" value="2"></td>
+<td id="c2_long_cross_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Vertical Leg Cross Member</td>
+<td id="c2_vertical_len">0</td>
+<td><input id="c2_vertical_qty" value="21"></td>
+<td id="c2_vertical_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Short Side MS Sheet</td>
+<td>585 × 252</td>
+<td><input id="c2_sheet_short_qty" value="8"></td>
+<td id="c2_sheet_short_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Long Side MS Sheet</td>
+<td>1025 × 252</td>
+<td><input id="c2_sheet_long_qty" value="8"></td>
+<td id="c2_sheet_long_wt">0.00</td>
+</tr>
+
+<tr>
+<td>Top Cover</td>
+<td id="c2_top_size">0 × 0</td>
+<td>1</td>
+<td id="c2_top_wt">0.00</td>
+</tr>
+
+</table>
+
+<div class="result">
+
+<h3>CASE-2 RESULT</h3>
+
+<div><span>Tube Weight</span><span id="c2_tube_total">0.00 kg</span></div>
+
+<div><span>Sheet Weight</span><span id="c2_sheet_total">0.00 kg</span></div>
+
+<div><span>Top Cover Weight</span><span id="c2_cover_total">0.00 kg</span></div>
+
+<div><span>Misc Weight</span><span id="c2_misc_total">0.00 kg</span></div>
+
+<hr>
+
+<div style="font-weight:bold;font-size:18px;">
+<span>Total Weight</span>
+<span id="c2_total">0.00 kg</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================= SUMMARY ============================== -->
+
+<div class="summary">
+
+<h2>SUMMARY</h2>
+
+<table>
+
+<tr>
+<th>Description</th>
+<th>Case-1</th>
+<th>Case-2</th>
+</tr>
+
+<tr>
+<td>Total Weight (kg)</td>
+<td id="summary_case1">0.00</td>
+<td id="summary_case2">0.00</td>
+</tr>
+
+<tr>
+<td>Difference (kg)</td>
+<td colspan="2" id="summary_difference">0.00</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="buttons">
+
+<button onclick="calculate()">Calculate Weight</button>
+
+<button onclick="location.reload()">Reset</button>
+
+<button onclick="window.print()">Print</button>
+
+</div>
+
+<script>
+
+document.getElementById("material").addEventListener("change",function(){
+    document.getElementById("density").value=this.value;
+    calculate();
+});
+
+document.querySelectorAll("input").forEach(function(e){
+    e.addEventListener("input",calculate);
+});
+
+function tubeWeight(length,qty){
+
+    let H=parseFloat(document.getElementById("tubeH").value);
+    let W=parseFloat(document.getElementById("tubeW").value);
+    let T=parseFloat(document.getElementById("tubeT").value);
+    let D=parseFloat(document.getElementById("density").value);
+
+    let area=(H*W)-((H-2*T)*(W-2*T)); // mm²
+
+    let wt=(area*length*qty*D)/1000000000;
+
+    return wt;
+
+}
+
+function sheetWeight(L,W,T,Q,D){
+
+    return (L*W*T*Q*D)/1000000000;
+
+}
+
+function calculate(){
+
+let D=parseFloat(document.getElementById("density").value);
+
+let tubeW=parseFloat(document.getElementById("tubeW").value);
+let tubeH=parseFloat(document.getElementById("tubeH").value);
+let sheetT=parseFloat(document.getElementById("sheetT").value);
+let topT=parseFloat(document.getElementById("topT").value);
+let misc=parseFloat(document.getElementById("misc").value);
+
+//===================== CASE 1 ==========================
+
+let c1Long=parseFloat(document.getElementById("c1_long").value);
+let c1Short=parseFloat(document.getElementById("c1_short").value);
+
+let c1ShortCross=c1Short-tubeW-tubeW;
+let c1LongCross=(c1Long-tubeW-tubeW-tubeW)/2;
+let c1Vertical=211-tubeH-tubeH-sheetT;
+
+document.getElementById("c1_short_cross_len").innerHTML=c1ShortCross.toFixed(0);
+document.getElementById("c1_long_cross_len").innerHTML=c1LongCross.toFixed(0);
+document.getElementById("c1_vertical_len").innerHTML=c1Vertical.toFixed(0);
+
+let wt1=tubeWeight(c1Long,parseFloat(document.getElementById("c1_long_qty").value));
+let wt2=tubeWeight(c1Short,parseFloat(document.getElementById("c1_short_qty").value));
+let wt3=tubeWeight(c1ShortCross,parseFloat(document.getElementById("c1_short_cross_qty").value));
+let wt4=tubeWeight(c1LongCross,parseFloat(document.getElementById("c1_long_cross_qty").value));
+let wt5=tubeWeight(c1Vertical,parseFloat(document.getElementById("c1_vertical_qty").value));
+
+document.getElementById("c1_long_wt").innerHTML=wt1.toFixed(2);
+document.getElementById("c1_short_wt").innerHTML=wt2.toFixed(2);
+document.getElementById("c1_short_cross_wt").innerHTML=wt3.toFixed(2);
+document.getElementById("c1_long_cross_wt").innerHTML=wt4.toFixed(2);
+document.getElementById("c1_vertical_wt").innerHTML=wt5.toFixed(2);
+
+let sheet1=sheetWeight(585,252,sheetT,parseFloat(document.getElementById("c1_sheet_short_qty").value),D);
+let sheet2=sheetWeight(1025,252,sheetT,parseFloat(document.getElementById("c1_sheet_long_qty").value),D);
+
+document.getElementById("c1_sheet_short_wt").innerHTML=sheet1.toFixed(2);
+document.getElementById("c1_sheet_long_wt").innerHTML=sheet2.toFixed(2);
+
+let topL=c1Long+60;
+let topW=c1Short+60;
+
+document.getElementById("c1_top_size").innerHTML=topL+" × "+topW;
+
+let topWt=sheetWeight(topL,topW,topT,1,D);
+
+document.getElementById("c1_top_wt").innerHTML=topWt.toFixed(2);
+
+let tubeTotal=wt1+wt2+wt3+wt4+wt5;
+let sheetTotal=sheet1+sheet2;
+
+let total=tubeTotal+sheetTotal+topWt+misc;
+
+document.getElementById("c1_tube_total").innerHTML=tubeTotal.toFixed(2)+" kg";
+document.getElementById("c1_sheet_total").innerHTML=sheetTotal.toFixed(2)+" kg";
+document.getElementById("c1_cover_total").innerHTML=topWt.toFixed(2)+" kg";
+document.getElementById("c1_misc_total").innerHTML=misc.toFixed(2)+" kg";
+document.getElementById("c1_total").innerHTML=total.toFixed(2)+" kg";
+
+//===================== CASE 2 ==========================
+
+let c2Long=parseFloat(document.getElementById("c2_long").value);
+let c2Short=parseFloat(document.getElementById("c2_short").value);
+
+let c2ShortCross=c2Short-tubeW-tubeW;
+let c2LongCross=(c2Long-tubeW-tubeW-tubeW)/2;
+let c2Vertical=211-tubeH-sheetT;
+
+document.getElementById("c2_short_cross_len").innerHTML=c2ShortCross.toFixed(0);
+document.getElementById("c2_long_cross_len").innerHTML=c2LongCross.toFixed(0);
+document.getElementById("c2_vertical_len").innerHTML=c2Vertical.toFixed(0);
+
+let a=tubeWeight(c2Long,parseFloat(document.getElementById("c2_long_qty").value));
+let b=tubeWeight(c2Short,parseFloat(document.getElementById("c2_short_qty").value));
+let c=tubeWeight(c2ShortCross,parseFloat(document.getElementById("c2_short_cross_qty").value));
+let d=tubeWeight(c2LongCross,parseFloat(document.getElementById("c2_long_cross_qty").value));
+let e=tubeWeight(c2Vertical,parseFloat(document.getElementById("c2_vertical_qty").value));
+
+document.getElementById("c2_long_wt").innerHTML=a.toFixed(2);
+document.getElementById("c2_short_wt").innerHTML=b.toFixed(2);
+document.getElementById("c2_short_cross_wt").innerHTML=c.toFixed(2);
+document.getElementById("c2_long_cross_wt").innerHTML=d.toFixed(2);
+document.getElementById("c2_vertical_wt").innerHTML=e.toFixed(2);
+
+let s1=sheetWeight(585,252,sheetT,parseFloat(document.getElementById("c2_sheet_short_qty").value),D);
+let s2=sheetWeight(1025,252,sheetT,parseFloat(document.getElementById("c2_sheet_long_qty").value),D);
+
+document.getElementById("c2_sheet_short_wt").innerHTML=s1.toFixed(2);
+document.getElementById("c2_sheet_long_wt").innerHTML=s2.toFixed(2);
+
+let top2=sheetWeight(c2Long+60,c2Short+60,topT,1,D);
+
+document.getElementById("c2_top_size").innerHTML=(c2Long+60)+" × "+(c2Short+60);
+document.getElementById("c2_top_wt").innerHTML=top2.toFixed(2);
+
+let tube2=a+b+c+d+e;
+let sheet2Total=s1+s2;
+
+let total2=tube2+sheet2Total+top2+misc;
+
+document.getElementById("c2_tube_total").innerHTML=tube2.toFixed(2)+" kg";
+document.getElementById("c2_sheet_total").innerHTML=sheet2Total.toFixed(2)+" kg";
+document.getElementById("c2_cover_total").innerHTML=top2.toFixed(2)+" kg";
+document.getElementById("c2_misc_total").innerHTML=misc.toFixed(2)+" kg";
+document.getElementById("c2_total").innerHTML=total2.toFixed(2)+" kg";
+
+//===================== SUMMARY ==========================
+
+document.getElementById("summary_case1").innerHTML=total.toFixed(2)+" kg";
+document.getElementById("summary_case2").innerHTML=total2.toFixed(2)+" kg";
+document.getElementById("summary_difference").innerHTML=Math.abs(total-total2).toFixed(2)+" kg";
+
+}
+
+calculate();
+
+</script>
+
+</body>
+</html>
