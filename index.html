@@ -227,6 +227,34 @@ grid-template-columns:1fr;
 
 }
 
+.report-section table td{
+text-align:center;
+}
+
+.report-section table td[style*="text-align:left"]{
+text-align:left;
+}
+
+@media print{
+
+body.printing-report .container > h1,
+body.printing-report .container > .section:not(.report-section),
+body.printing-report .container > .caseContainer,
+body.printing-report .container > .summary,
+body.printing-report .container > .buttons{
+display:none !important;
+}
+
+body.printing-calc .report-section{
+display:none !important;
+}
+
+body.printing-report .report-section .buttons{
+display:none !important;
+}
+
+}
+
 </style>
 
 </head>
@@ -318,6 +346,38 @@ grid-template-columns:1fr;
 <label>Miscellaneous Weight (kg)</label>
 
 <input id="misc" value="0">
+
+</div>
+
+<div>
+
+<label>Area Size Height (mm)</label>
+
+<input id="area_H" value="261">
+
+</div>
+
+<div>
+
+<label>E&E &amp; Cooling Plug Assembly Weight (kg)</label>
+
+<input id="ee_assembly" value="12.00">
+
+</div>
+
+<div>
+
+<label>Module Length Margin (mm)</label>
+
+<input id="module_margin_L" value="119">
+
+</div>
+
+<div>
+
+<label>Module Height Range (mm)</label>
+
+<input id="module_H_range" value="261–266">
 
 </div>
 
@@ -556,11 +616,155 @@ grid-template-columns:1fr;
 
 <button onclick="location.reload()">Reset</button>
 
-<button onclick="window.print()">Print</button>
+<button onclick="printCalculator()">Print Calculator</button>
+
+</div>
+
+<!-- ========================= ENGINEERING REPORT ============================== -->
+
+<div class="section report-section" id="engineeringReport">
+
+<h1 style="margin-bottom:4px;">ENGINEERING COMPARISON REPORT</h1>
+<p style="text-align:center;color:#666;margin-bottom:20px;font-size:13px;">Old Hithium Concept vs. New Concept (Case 1 &amp; Case 2) — auto-synced with the calculator above</p>
+
+<h2>1. Design Comparison Summary</h2>
+
+<table id="reportTable1">
+
+<tr>
+<th>Parameter</th>
+<th>Old Hithium Concept</th>
+<th>New Concept – Case 1<br><span id="rep_c1_spec" style="font-weight:400;font-size:11px;"></span></th>
+<th>New Concept – Case 2<br><span id="rep_c2_spec" style="font-weight:400;font-size:11px;"></span></th>
+</tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Metal Frame Weight</td>
+<td><input id="oh_frame" value="29.60" style="width:70px;text-align:center;display:inline-block;"> kg</td>
+<td id="rep_c1_frame">0.00 kg</td>
+<td id="rep_c2_frame">0.00 kg</td>
+</tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Aluminum End Plate Weight</td>
+<td>
+<input id="oh_endplate_unit" value="1.57" style="width:50px;text-align:center;"> ×
+<input id="oh_endplate_qty" value="8" style="width:35px;text-align:center;"> =
+<span id="oh_endplate_total">12.56</span> kg
+</td>
+<td>—</td>
+<td>—</td>
+</tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Metal Strip Weight</td>
+<td>
+<input id="oh_strip_unit" value="0.50" style="width:50px;text-align:center;"> ×
+<input id="oh_strip_qty" value="8" style="width:35px;text-align:center;"> =
+<span id="oh_strip_total">4.00</span> kg
+</td>
+<td>—</td>
+<td>—</td>
+</tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Top Cover Weight</td>
+<td><input id="oh_topcover" value="38.93" style="width:70px;text-align:center;"> kg</td>
+<td id="rep_c1_topcover">0.00 kg</td>
+<td id="rep_c2_topcover">0.00 kg</td>
+</tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Front Side E&E &amp; Cooling Plug Assembly Frame</td>
+<td>—</td>
+<td colspan="2">Uses "E&E &amp; Cooling Plug Assembly Weight" set above (applies to both cases)</td>
+</tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Top Pack Locking Strip</td>
+<td>NA</td>
+<td>To Be Added</td>
+<td>To Be Added</td>
+</tr>
+
+<tr style="background:#8EAADB;color:white;font-weight:bold;">
+<td style="text-align:left;">Total Weight (excl. Top Pack Locking Strip)</td>
+<td id="rep_oh_total">85.09 kg</td>
+<td id="rep_c1_total">0.00 kg</td>
+<td id="rep_c2_total">0.00 kg</td>
+</tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Battery Pack Area Size (L × W × H)</td>
+<td>
+<input id="oh_area_L" value="2148" style="width:50px;text-align:center;"> ×
+<input id="oh_area_W" value="1260" style="width:50px;text-align:center;"> ×
+<input id="oh_area_H" value="261" style="width:40px;text-align:center;"> mm
+</td>
+<td id="rep_c1_area">0 × 0 × 0 mm</td>
+<td id="rep_c2_area">0 × 0 × 0 mm</td>
+</tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Possible Module Outer Size (L × W × H)</td>
+<td>
+<input id="oh_module_L" value="2274" style="width:50px;text-align:center;"> ×
+<input id="oh_module_W" value="1260" style="width:50px;text-align:center;"> ×
+<input id="oh_module_H" value="261" style="width:40px;text-align:center;"> mm
+</td>
+<td id="rep_c1_module">0 × 0 × 0 mm</td>
+<td id="rep_c2_module">0 × 0 × 0 mm</td>
+</tr>
+
+</table>
+
+<p style="font-size:12px;color:#666;font-style:italic;margin-top:8px;">Note: Total weight does not include the Top Pack Locking Strip, as its weight is yet to be finalized.</p>
+
+<h2 style="margin-top:25px;">2. Weight Comparison</h2>
+
+<table id="reportTable2">
+
+<tr><th>Description</th><th>Old Hithium</th><th>Case 1</th><th>Case 2</th></tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Total Weight (Without Top Pack Locking Strip)</td>
+<td id="rep2_oh">85.09 kg</td>
+<td id="rep2_c1">0.00 kg</td>
+<td id="rep2_c2">0.00 kg</td>
+</tr>
+
+<tr>
+<td style="text-align:left;font-weight:600;">Difference vs. Old Concept</td>
+<td>—</td>
+<td id="rep2_diff_c1" style="font-weight:bold;">+0.00 kg</td>
+<td id="rep2_diff_c2" style="font-weight:bold;">+0.00 kg</td>
+</tr>
+
+</table>
+
+<h2 style="margin-top:25px;">3. Key Observations</h2>
+
+<p id="rep_observations" style="line-height:1.6;font-size:14px;padding:0 5px;"></p>
+
+<div class="buttons">
+<button onclick="printReport()">🖨 Print Engineering Report</button>
+</div>
 
 </div>
 
 <script>
+
+function printCalculator(){
+    document.body.classList.add("printing-calc");
+    window.print();
+    setTimeout(function(){document.body.classList.remove("printing-calc");},500);
+}
+
+function printReport(){
+    document.body.classList.add("printing-report");
+    window.print();
+    setTimeout(function(){document.body.classList.remove("printing-report");},500);
+}
 
 document.getElementById("material").addEventListener("change",function(){
     document.getElementById("density").value=this.value;
@@ -705,6 +909,96 @@ document.getElementById("c2_total").innerHTML=total2.toFixed(2)+" kg";
 document.getElementById("summary_case1").innerHTML=total.toFixed(2)+" kg";
 document.getElementById("summary_case2").innerHTML=total2.toFixed(2)+" kg";
 document.getElementById("summary_difference").innerHTML=Math.abs(total-total2).toFixed(2)+" kg";
+
+//===================== ENGINEERING REPORT SYNC ==========================
+
+updateReport(tubeTotal,topWt,c1Long,c1Short,tube2,top2,c2Long,c2Short);
+
+}
+
+function updateReport(c1TubeTotal,c1CoverTotal,c1Long,c1Short,c2TubeTotal,c2CoverTotal,c2Long,c2Short){
+
+let tubeH=parseFloat(document.getElementById("tubeH").value);
+let tubeW=parseFloat(document.getElementById("tubeW").value);
+let tubeT=parseFloat(document.getElementById("tubeT").value);
+
+let specText="("+tubeH+"×"+tubeW+"×"+tubeT+"mm tube)";
+document.getElementById("rep_c1_spec").innerHTML=specText;
+document.getElementById("rep_c2_spec").innerHTML=specText;
+
+// ---- Old Hithium column ----
+let ohFrame=parseFloat(document.getElementById("oh_frame").value)||0;
+let ohEndplateUnit=parseFloat(document.getElementById("oh_endplate_unit").value)||0;
+let ohEndplateQty=parseFloat(document.getElementById("oh_endplate_qty").value)||0;
+let ohEndplateTotal=ohEndplateUnit*ohEndplateQty;
+document.getElementById("oh_endplate_total").innerHTML=ohEndplateTotal.toFixed(2);
+
+let ohStripUnit=parseFloat(document.getElementById("oh_strip_unit").value)||0;
+let ohStripQty=parseFloat(document.getElementById("oh_strip_qty").value)||0;
+let ohStripTotal=ohStripUnit*ohStripQty;
+document.getElementById("oh_strip_total").innerHTML=ohStripTotal.toFixed(2);
+
+let ohTopcover=parseFloat(document.getElementById("oh_topcover").value)||0;
+
+let ohTotal=ohFrame+ohEndplateTotal+ohStripTotal+ohTopcover;
+document.getElementById("rep_oh_total").innerHTML=ohTotal.toFixed(2)+" kg";
+
+// ---- Case 1 / Case 2 columns ----
+let eeAssembly=parseFloat(document.getElementById("ee_assembly").value)||0;
+
+document.getElementById("rep_c1_frame").innerHTML=c1TubeTotal.toFixed(2)+" kg";
+document.getElementById("rep_c2_frame").innerHTML=c2TubeTotal.toFixed(2)+" kg";
+document.getElementById("rep_c1_topcover").innerHTML=c1CoverTotal.toFixed(2)+" kg";
+document.getElementById("rep_c2_topcover").innerHTML=c2CoverTotal.toFixed(2)+" kg";
+
+let c1Total=c1TubeTotal+c1CoverTotal+eeAssembly;
+let c2Total=c2TubeTotal+c2CoverTotal+eeAssembly;
+
+document.getElementById("rep_c1_total").innerHTML=c1Total.toFixed(2)+" kg";
+document.getElementById("rep_c2_total").innerHTML=c2Total.toFixed(2)+" kg";
+
+// ---- Area / Module sizes ----
+let areaH=parseFloat(document.getElementById("area_H").value)||261;
+let marginL=parseFloat(document.getElementById("module_margin_L").value)||0;
+let modHRange=document.getElementById("module_H_range").value;
+
+document.getElementById("rep_c1_area").innerHTML=c1Long+" × "+c1Short+" × "+areaH+" mm";
+document.getElementById("rep_c2_area").innerHTML=c2Long+" × "+c2Short+" × "+areaH+" mm";
+document.getElementById("rep_c1_module").innerHTML=(c1Long+marginL).toFixed(0)+" × "+c1Short+" × "+modHRange+" mm";
+document.getElementById("rep_c2_module").innerHTML=(c2Long+marginL).toFixed(0)+" × "+c2Short+" × "+modHRange+" mm";
+
+// ---- Section 2: Weight Comparison ----
+document.getElementById("rep2_oh").innerHTML=ohTotal.toFixed(2)+" kg";
+document.getElementById("rep2_c1").innerHTML=c1Total.toFixed(2)+" kg";
+document.getElementById("rep2_c2").innerHTML=c2Total.toFixed(2)+" kg";
+
+let diff1=c1Total-ohTotal;
+let diff2=c2Total-ohTotal;
+let diff1El=document.getElementById("rep2_diff_c1");
+let diff2El=document.getElementById("rep2_diff_c2");
+
+diff1El.innerHTML=(diff1>=0?"+":"")+diff1.toFixed(2)+" kg";
+diff2El.innerHTML=(diff2>=0?"+":"")+diff2.toFixed(2)+" kg";
+diff1El.style.color=diff1>0?"#C00000":"#375623";
+diff2El.style.color=diff2>0?"#C00000":"#375623";
+
+// ---- Key Observations ----
+let lighterName = c1Total<c2Total ? "Case 1" : (c2Total<c1Total ? "Case 2" : "Both cases");
+let heavierName = lighterName==="Case 1" ? "Case 2" : "Case 1";
+let diffBetween = Math.abs(c1Total-c2Total).toFixed(2);
+
+let obs = "";
+if(c1Total!==c2Total){
+    obs += lighterName+" is the lighter structural option, weighing "+diffBetween+" kg less than "+heavierName+". ";
+}
+obs += diff1>0
+    ? "Case 1 adds "+diff1.toFixed(2)+" kg ("+((diff1/ohTotal)*100).toFixed(1)+"%) over the Old Hithium concept. "
+    : "Case 1 reduces weight by "+Math.abs(diff1).toFixed(2)+" kg vs. the Old Hithium concept. ";
+obs += diff2>0
+    ? "Case 2 adds "+diff2.toFixed(2)+" kg ("+((diff2/ohTotal)*100).toFixed(1)+"%) over the Old Hithium concept."
+    : "Case 2 reduces weight by "+Math.abs(diff2).toFixed(2)+" kg vs. the Old Hithium concept.";
+
+document.getElementById("rep_observations").innerHTML=obs;
 
 }
 
